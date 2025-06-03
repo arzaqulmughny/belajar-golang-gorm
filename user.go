@@ -3,7 +3,7 @@ package belajargolanggorm
 import "time"
 
 type User struct {
-	Id int `gorm:"primary_key;column:id"`
+	Id int `gorm:"primary_key;column:id;<-:create"`
 	Name string `gorm:"column:name"`
 	Email string `gorm:"column:email"`
 	Password string `gorm:"column:password"`
