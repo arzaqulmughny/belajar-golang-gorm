@@ -1,4 +1,4 @@
-package main
+package belajargolanggorm
 
 import (
 	"testing"
@@ -23,4 +23,22 @@ var db = OpenConnection()
 
 func TestOpenConnection(t *testing.T) {
 	assert.NotNil(t, db)
+}
+
+func TestExecuteSQL(t *testing.T) {
+	err := db.Exec("INSERT INTO samples(name) VALUES (?)", "Arza").Error;
+	assert.Nil(t, err)
+}
+
+type Sample struct {
+	Id int
+	Name string
+}
+
+func TestRawSQL(t *testing.T) {
+	var sample Sample
+	err := db.Raw("SELECT id, name FROM samples WHERE name = ?", "Arza").Scan(&sample).Error
+
+	assert.Nil(t, err)
+	assert.Equal(t, "Arza", sample.Name)
 }
