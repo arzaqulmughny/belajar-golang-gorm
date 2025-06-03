@@ -1,6 +1,7 @@
 package belajargolanggorm
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -41,4 +42,32 @@ func TestRawSQL(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, "Arza", sample.Name)
+}
+
+func TestCreateUser(t *testing.T) {
+	user := User{
+		Name: "Arza",
+		Email: "arza@test.com",
+		Password: "123456",
+	}
+
+	response := db.Create(&user)
+	assert.Nil(t, response.Error)
+	assert.Equal(t, int64(1), response.RowsAffected)
+}
+
+func TestCreateUsers(t *testing.T) {
+	var users []User
+	
+	for i := 0; i < 10; i++ {
+		users = append(users, User{
+			Name: "User " + strconv.Itoa(i),
+			Email: "user" + strconv.Itoa(i) + "@email.com",
+			Password: "rahasia",
+		})
+	}
+
+	response := db.Create(&users)
+	assert.Nil(t, response.Error)
+	assert.Equal(t, int64(10), response.RowsAffected)
 }
